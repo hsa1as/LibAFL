@@ -452,7 +452,7 @@ where
         manager: &mut EM,
         input: &I,
         exec_res: &ExecuteInputResult,
-        observers: &OT,
+        _observers: &OT,
         exit_kind: &ExitKind,
     ) -> Result<(), Error> {
         // Now send off the event
@@ -461,7 +461,8 @@ where
             && manager.configuration() != EventConfig::AlwaysUnique
         {
             // TODO set None for fast targets
-            Some(postcard::to_allocvec(observers)?)
+            //Some(postcard::to_allocvec(observers)?)
+            None
         } else {
             None
         };
