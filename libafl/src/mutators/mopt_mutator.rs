@@ -8,7 +8,6 @@ use core::fmt::{self, Debug};
 use libafl_bolts::{
     Named,
     rands::{Rand, StdRand},
-    tuples::NamedTuple,
 };
 use serde::{Deserialize, Serialize};
 
@@ -502,15 +501,15 @@ impl<MT> StdMOptMutator<MT> {
     ) -> Result<Self, Error>
     where
         S: HasMetadata + HasRand,
-        MT: NamedTuple,
+        MT: libafl_bolts::HasLen,
     {
         if !state.has_metadata::<MOpt>() {
             let rand_seed = state.rand_mut().next();
-            state.add_metadata::<MOpt>(MOpt::new(MT::LEN, swarm_num, rand_seed)?);
+            state.add_metadata::<MOpt>(MOpt::new(mutations.len(), swarm_num, rand_seed)?);
         }
 
         Ok(Self {
-            name: Cow::from(format!("StdMOptMutator[{}]", mutations.names().join(","))),
+            name: Cow::from(format!("StdMOptMutator[]")),
             mode: MOptMode::Pilotfuzzing,
             finds_before: 0,
             mutations,
